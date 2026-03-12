@@ -7940,7 +7940,7 @@ A key challenge in this project is handling the Foreign Function Interface betwe
 </tbody>
 </table>
 <p>This helps us understand why the Rust implementation is necessary.</p>
-<p>I have already covered the key concepts required for this project, including Graph Signal Processing basics, the R–Rust FFI bridge, and the libraries extendr and faer (already used in tests). With this preliminary preparation completed, I will now proceed with the detailed implementation plan and the integration of the required libraries for the project.</p>
+<p>I have already covered the key concepts required for this project, including Graph Signal Processing basics, the R–Rust FFI bridge, and the libraries extendr and faer (already used in tests). With this preliminary preparation completed, I will now proceed with the setup and detailed implementation plan for the project.</p>
 <p><strong>The following development cycle will be followed</strong></p>
 <div align="center">
 <img alt="No description has been provided for this image" src="diagrams/devcycle.jpg"/>
@@ -8005,9 +8005,9 @@ The Rust function reconstructs the sparse matrix and performs validation before 
 <img alt="No description has been provided for this image" src="diagrams/Rustside.png"/>
 </div>
 <p>Note: R stores slots i and p as <code>int32</code>, whereas faer expects <code>usize</code> in Rust. This conversion is safe (as nnz &lt; 2^31 for any realistic sparse matrix), but needs be explicit.
-Rust’s ownership system prevents the two most common Rcpp failures: \</p>
+Rust’s ownership system prevents the two most common Rcpp failures:</p>
 <ul>
-<li><strong>Buffer overflow:</strong> Rust’s slice indexing panics on out-of-bounds access rather than reading adjacent memory.\</li>
+<li><strong>Buffer overflow:</strong> Rust’s slice indexing panics on out-of-bounds access rather than reading adjacent memory.</li>
 <li><strong>Use-after-free:</strong> The borrow checker ensures R vectors passed to Rust remain valid for the duration of the function call.</li>
 </ul>
 <h3 id="Stage-3:-Pixel-Neighborhood-Graph-Construction">Stage 3: Pixel Neighborhood Graph Construction<a class="anchor-link" href="#Stage-3:-Pixel-Neighborhood-Graph-Construction">¶</a></h3><p>In hyperspectral spatial smoothing, the image is modeled as a graph where each pixel is a node and edges connect neighboring pixels. This graph captures the spatial structure of the image and forms the basis for constructing the graph Laplacian matrix, which is later used in the smoothing equation: <code>(I+αL)x=b</code>.The Rust library petgraph is used to build this graph.</p>
@@ -8040,44 +8040,48 @@ Rust’s ownership system prevents the two most common Rcpp failures: \</p>
 <p><strong>Why connectivity matters?</strong><br/>
 More neighbours means stronger spatial coupling, and hence smoother results. 4 neighbors mean sharper edges preserved, while 8 neighbors mean smoother results. The configuration may depend based on the type of operation.</p>
 <p>Once we have this, the Graph Laplacian can be computed using:
-<code>L = D − W</code> <br/>
+$$L = D − W$$
 where, W = adjacency matrix derived from graph edges<br/>
 D = degree matrix <br/>
 This Laplacian is the core operator used in the smoothing system. Instead of sending a huge adjacency matrix across the R–Rust FFI boundary, Rust reconstructs the graph using only height, width, connectivity. This greatly reduces FFI overhead.</p>
 <h3 id="Stage-4:-Iterative-Solver-using-CG/BiCGSTAB">Stage 4: Iterative Solver using CG/BiCGSTAB<a class="anchor-link" href="#Stage-4:-Iterative-Solver-using-CG/BiCGSTAB">¶</a></h3><p>Once the Laplacian L is built, we need to solve <code>(I+αL)x=b</code> which performs graph-based low-pass filtering, reducing spatial noise while preserving large structures.
 Spatial smoothing is formulated as solving the linear system</p>
 <pre><code>(I+αL)x=b
-for each wavelength band, where 
-L is the graph Laplacian, 
+for each wavelength band
+where L is the graph Laplacian, 
 b is the original signal, 
 x is the smoothed output, and  α&gt;0 controls the smoothing strength.
 </code></pre>
 <p>Since L is sparse, the system can be solved efficiently using iterative methods such as Conjugate Gradient (CG) for symmetric systems or BiCGSTAB for non-symmetric systems. This reduces the computational complexity to O(N) per band, compared to  O(N3) for dense direct solvers. Both these methods are present in the <code>faer</code> library.</p>
 <h4 id="Conjugate-Gradient-Algorithm">Conjugate Gradient Algorithm<a class="anchor-link" href="#Conjugate-Gradient-Algorithm">¶</a></h4><p>If the matrix <code>I+αL</code> is symmetric, then we use this approach.
-The CG method solves <code>Ax=b</code>, where <code>A=I+αL</code>.<br/>
-Then the algorithm iteratively improves the solution.\</p>
-<pre><code>Algorithm steps :-
-1. Initialize x0=0
-2. compute residual: r0=b−Ax0
-3. Update search direction: p0=r0
-4. Iterate until convergence
-</code></pre>
+The CG method solves $A_x = $b, where $A = I + αL$.<br/>
+Then the algorithm iteratively improves the solution.</p>
+<p>Algorithm steps :-</p>
+<ol>
+<li>Initialize $x_0 = 0$</li>
+<li>compute residual: $r_0 = b - A x_0$</li>
+<li>Update search direction: $p_0 = r_0$</li>
+<li>Iterate until convergence</li>
+</ol>
 <p><strong>Rust implementation</strong></p>
 <div align="center">
 <img alt="No description has been provided for this image" src="diagrams/cg.png"/>
 </div>
 <h3 id="BiCGSTAB-(Bi-Conjugate-Gradient-Stabilized)-Algorithm">BiCGSTAB (Bi-Conjugate Gradient Stabilized) Algorithm<a class="anchor-link" href="#BiCGSTAB-(Bi-Conjugate-Gradient-Stabilized)-Algorithm">¶</a></h3><p>If the matrix <code>I+αL</code> is non-symmetric, then we use this approach.</p>
-<pre><code>Algorithm :-
-1. Initialize x0=0, r0=b−Ax0
-2. Choose a shadow residual r^=r0
-3. Iteration: Compute intermediate scalars and vectors to update the solution:
-   - update step size
-   - compute intermediate residual
-   -compute stabilization factor 
-4. Update solution
-5. Update residual and direction
-6. Update rk+1 and search direction, then repeat until convergence.
-</code></pre>
+<p>Algorithm :-</p>
+<ol>
+<li>Initialize $x_0 = 0$, $r_0 = b - A x_0$</li>
+<li>Choose a shadow residual $\hat{r} = r_0$</li>
+<li>Iteration: Compute intermediate scalars and vectors to update the solution:<ul>
+<li>update step size</li>
+<li>compute intermediate residual
+-compute stabilization factor</li>
+</ul>
+</li>
+<li>Update solution</li>
+<li>Update residual and direction</li>
+<li>Update rk+1 and search direction, then repeat until convergence.</li>
+</ol>
 <p><strong>Rust implementation</strong></p>
 <div align="center">
 <img alt="No description has been provided for this image" src="diagrams/bigcstab.png"/>
@@ -8090,29 +8094,31 @@ These solves are completely independent, which means we can run them in parallel
 </div>
 <h3 id="Stage-6:-Testing-and-Benchmarking">Stage 6: Testing and Benchmarking<a class="anchor-link" href="#Stage-6:-Testing-and-Benchmarking">¶</a></h3><h4 id="Unit-Tests">Unit Tests<a class="anchor-link" href="#Unit-Tests">¶</a></h4><p>The testing strategy will combine unit tests, integration tests, and performance benchmarks for large datasets. We use the <code>testthat</code> package inside the module and add the testfiles in the <code>hyperspec.rust/tests/testthat/</code> directory. Then we can run the unit tests automatically using <code>devtools::test()</code>. The following 4 unit tests will validate each component of the Rust backend independently:</p>
 <ol>
-<li><p><strong>FFI Bridge Validation:</strong> The first component to test is the conversion from the R dgCMatrix sparse matrix format to Rust sparse structures. The following will be implemented:</p>
+<li><strong>FFI Bridge Validation:</strong> The first component to test is the conversion from the R dgCMatrix sparse matrix format to Rust sparse structures. The following will be implemented:</li>
+</ol>
 <ul>
 <li>Correctness in extraction of i, p, and x slots from a dgCMatrix.</li>
 <li>Verify: length(i) == length(x), length(p) == ncol + 1, column pointers are monotonic, row indices fall within valid bounds.</li>
 <li>Proper descriptive error messages returned to R incase of any failure.</li>
 </ul>
-</li>
-<li><p><strong>Adjacency Graph Construction Tests:</strong> The pixel adjacency graph will be tested to ensure correct connectivity. The following will be implemented:</p>
+<ol start="2">
+<li><strong>Adjacency Graph Construction Tests:</strong> The pixel adjacency graph will be tested to ensure correct connectivity. The following will be implemented:</li>
+</ol>
 <ul>
 <li>Correct number of nodes for a given grid size.</li>
 <li>Correct number of edges depending on the type of connectivity (eg, 4-connectivity or 8-connectivity)</li>
 <li>Validate that interior, edge, and corner pixels have correct neighbor counts (eg, a corner pixel has 2 neighbors, edge pixel has 3).</li>
 </ul>
-</li>
-<li><p><strong>Laplacian Matrix Construction:</strong> The Laplacian construction logic will be validated using small matrices. We first construct the Laplacian and then verify it's properties :</p>
+<ol start="3">
+<li><strong>Laplacian Matrix Construction:</strong> The Laplacian construction logic will be validated using small matrices. We first construct the Laplacian and then verify it's properties :</li>
+</ol>
 <ul>
 <li>diagonal elements equal the node degree.</li>
 <li>off-diagonal entries equal −1 for neighbors</li>
 <li>row sums equal zero for the Laplacian</li>
 </ul>
-</li>
-<li><p><strong>Corectness of the iterative solver:</strong> The solver results will be validated for already known results calculated using dense R solver. There might be very small errors and hence we require a tolerence value(almost negligible) for the check.</p>
-</li>
+<ol start="4">
+<li><strong>Corectness of the iterative solver:</strong> The solver results will be validated for already known results calculated using dense R solver. There might be very small errors and hence we require a tolerence value(almost negligible) for the check.</li>
 </ol>
 <h4 id="Integration-Test">Integration Test<a class="anchor-link" href="#Integration-Test">¶</a></h4><p>The Integration tests would verify that the entire processing pipeline: from the R interface to the Rust solver and back to R. These tests will be automated using Continuous Integration (CI) so they run on every commit and pull request. The goal is to ensure:</p>
 <ul>
@@ -8125,7 +8131,7 @@ These solves are completely independent, which means we can run them in parallel
 <div align="center">
 <img alt="No description has been provided for this image" src="diagrams/citest.png"/>
 </div>
-<h4 id="Benchmarks">Benchmarks<a class="anchor-link" href="#Benchmarks">¶</a></h4><p>The target benchmark is for a <strong>512 × 512 × 2048</strong> hyperspectral dataset (approximately 4 GB). The 512 × 512 represents the spatial pixel grid and 2048 represents the wavelength dimension. The pure-R implementation has a time complexity of <strong>O(N^3)</strong> and a space complexity of <strong>O(N^2)</strong>. It would take up <strong>hours to run and about 16GB</strong> of RAM on a laptop (honestly speaking my laptop might just crash). The Rust implementation time complexity is <strong>O(N √k)</strong> and space complexity is <strong>O(N)</strong>, so it would be completed in <strong>less than 1 minute with about 4GB RAM</strong>.</p>
+<h4 id="Benchmarks">Benchmarks<a class="anchor-link" href="#Benchmarks">¶</a></h4><p>The target benchmark is for a <strong>512 × 512 × 2048</strong> hyperspectral dataset (approximately 4 GB). The 512 × 512 represents the spatial pixel grid and 2048 represents the wavelength dimension. The pure-R implementation has a time complexity of <strong>$O(N^3)$</strong> and a space complexity of <strong>$O(N^2)$</strong>. It would take up <strong>hours to run and about 16GB</strong> of RAM on a laptop (honestly speaking my laptop might just crash). The Rust implementation time complexity is <strong>$O(N √k)$</strong> and space complexity is <strong>$O(N)$</strong>, so it would be completed in <strong>less than 1 minute with about 4GB RAM</strong>.</p>
 <p><strong>Baseline Comparison:</strong> The Rust implementation will be compared against a baseline pure-R approach using sparse matrix operations from the <code>Matrix</code> package. In the baseline method, spatial smoothing is performed by solving the linear system <code>(I+αL)x=b</code> using standard R numerical routines such as <code>Matrix::solve()</code>. Although the Laplacian matrix is sparse, the baseline solver in R often converts intermediate representations into dense forms or performs operations that scale poorly with the number of pixels. As a result, performance deteriorates rapidly as the dataset grows.</p>
 <h3 id="Documentaion">Documentaion<a class="anchor-link" href="#Documentaion">¶</a></h3><p>I will make a developer-friendly documentation for all the Rust functions and the R level method including parameter explainations, examples, etc. The <code>roxygen</code> and <code>knitr</code> packages will be used. Additionally, an API reference will document all exported functions and interfaces. This reference will include  parameter descriptions, return types, examples, performance notes.</p>
 <p>A detailed vignette will demonstrate the complete spatial smoothing workflow on a hyperspectral Raman dataset, explaining the motivation for graph-based filtering and the underlying Laplacian formulation <code>(I+αL)x=b</code>. The <code>rmarkdown</code> package will be used and the vignette will also include explanations of the Laplacian filtering method, example code, and visualizations of results before and after smoothing.</p>
@@ -8213,7 +8219,7 @@ These solves are completely independent, which means we can run them in parallel
 <h4 id="Week-2">Week 2<a class="anchor-link" href="#Week-2">¶</a></h4><p>Continue working on Stage 2. Add validation checks and error handling. Verify correctness of the bridge and that the transfer is as intended. Share the weekly progress report with the mentor.</p>
 <h4 id="Week-3">Week 3<a class="anchor-link" href="#Week-3">¶</a></h4><p>Start working on Stage 3: Pixel Neighborhood Graph Construction. Implement the Rust code and verify correctness. Share the weekly progress report with the mentor.</p>
 <h4 id="Week-4">Week 4<a class="anchor-link" href="#Week-4">¶</a></h4><p>Continue working on Stage 3. Implement flexible graph construction configurable by neighbors. Optimize graph construction and validate correctness for larger grids. Share the weekly progress report with the mentor.</p>
-<h4 id="Week-5">Week 5<a class="anchor-link" href="#Week-5">¶</a></h4><p>Start working on Stage 4:Iterative Solver using CG/BiCGSTAB. Implement solver (for symmetric case) in Rust using CG and verify correctness. Share the weekly progress report with the mentor.</p>
+<h4 id="Week-5">Week 5<a class="anchor-link" href="#Week-5">¶</a></h4><p>Start working on Stage 4: Iterative Solver using CG/BiCGSTAB. Implement solver (for symmetric case) in Rust using CG and verify correctness. Share the weekly progress report with the mentor.</p>
 <h4 id="Week-6">Week 6<a class="anchor-link" href="#Week-6">¶</a></h4><p>Implement solver (for non-symmetric case) using BiCGSTAB. Wrap up everything and complete Stage 4. Integrate the solver with the R interface: <code>graphSmooth(hy, alpha, neighbors)</code> function callable from R. Share the weekly progress report with the mentor.</p>
 <h3 id="Midterm-Evaluations-(July-6-%E2%80%93-July-10)">Midterm Evaluations (July 6 – July 10)<a class="anchor-link" href="#Midterm-Evaluations-(July-6-%E2%80%93-July-10)">¶</a></h3><p>Write a detailed report on all the work done during the Coding Period. All work will be documented and uploaded.<br/>
 Midterm Deliverables:</p>
@@ -8262,7 +8268,7 @@ Endterm Deliverables:</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h1 id="Test">Test<a class="anchor-link" href="#Test">¶</a></h1><p>To get prepared for the project, I had done all three tests(easy, medium and hard) given by the mentor. Through the tests, I learned a lot of things that would be useful for the project like computing pixel adjacency matrix and using it to find the laplacian, creating R package using extendr, writing tests using testthat in R, slot extraction from a R dgCMatrix sparse matrix via extendr and constructing a faer sparse matrix from it. All these tasks gave me experience in using the packages and an insight to understand the maths that goes behind this. The tests were really well planned and it was fun to do them. I made a writeup for the tasks, on how I solved them alogn with setup instructions.</p>
+<h1 id="Test">Test<a class="anchor-link" href="#Test">¶</a></h1><p>To get prepared for the project, I had done all three tests(easy, medium and hard) given by the mentor. Through the tests, I learned a lot of things that would be useful for the project like computing pixel adjacency matrix and using it to find the laplacian, creating R package using extendr, writing tests using testthat in R, slot extraction from a R dgCMatrix sparse matrix via extendr and constructing a faer sparse matrix from it. All these tasks gave me experience in using the packages and an insight to understand the maths that goes behind this. The tests were really well planned and it was fun to do them. I made a writeup for the tasks, on how I solved them along with setup instructions.</p>
 <h2 id="Easy-Task">Easy Task<a class="anchor-link" href="#Easy-Task">¶</a></h2><p><strong>Problem Statement:</strong> Install hyperSpec in R. Load the flu or laser dataset. Write a script that constructs a simple pixel adjacency matrix from a 2D spatial grid and computes its graph Laplacian using base R. Plot the result. <br/>
 <strong>Solution::</strong> <a href="https://github.com/shinigami-777/hyperSpec-Tasks/tree/main/easy_task">https://github.com/shinigami-777/hyperSpec-Tasks/tree/main/easy_task</a></p>
 <h2 id="Medium-Task">Medium Task<a class="anchor-link" href="#Medium-Task">¶</a></h2><p><strong>Problem Statement:</strong> Create a minimal R package using extendr. Pass a dense matrix from R to Rust, compute its row sums in Rust using faer, and return the result to R. Include a test. <br/>
