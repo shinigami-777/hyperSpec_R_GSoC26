@@ -30,9 +30,8 @@ jobs:
         working-directory: blog
         run: quarto render
 
-      - name: Publish to GitHub Pages
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: blog/_site
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: blog/_site
