@@ -1,7 +1,11 @@
 ---
-title: "blog"
+title: "Weekly Reports"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  grid-columns: 1
+  fields: [image, date, title, description]
+  max-description-length: 150
+page-layout: full
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.

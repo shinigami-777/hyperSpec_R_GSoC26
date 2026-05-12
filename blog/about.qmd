@@ -2,4 +2,4 @@
 title: "About"
 ---
 
-About this site
+This is my blog for GSoC 2026 under The R Project for Statistical Computing.
