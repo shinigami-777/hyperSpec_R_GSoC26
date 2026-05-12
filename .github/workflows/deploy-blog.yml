@@ -8,8 +8,9 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Quarto
@@ -18,19 +19,20 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
 
-      - name: Install R dependencies
+      - name: Install R Packages
         run: |
           Rscript -e 'install.packages(c("quarto"))'
-          # Install other packages if needed
+
+      - name: List files (debug step)
+        run: ls -lR
 
       - name: Render site
-        working-directory: hyperSpec_R_GSoC26/blog
-        run: |
-          quarto render
+        working-directory: blog
+        run: quarto render
 
-      - name: Deploy to GitHub Pages
+      - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
-          path: hyperSpec_R_GSoC26/blog/_site
+          path: blog/_site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
