@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-05-12">
-<meta name="description" content="testing">
+<meta name="dcterms.date" content="2026-05-24">
+<meta name="description" content="My experience and explorations with hyperSpec and R during the community bonding period.">
 
-<title>Test Blog – shinigami-777’s Blog</title>
+<title>Community Bonding Period – A Month of Learning Beyond Code – shinigami-777’s Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -41,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-244ce1b9ec229af56bb6f90d24b3371d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-1e273511d09b17b40736144097ac5380.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -118,7 +118,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#desc" id="toc-desc" class="nav-link active" data-scroll-target="#desc">Desc</a></li>
+  <li><a href="#community-bonding-period-a-month-of-learning-beyond-code" id="toc-community-bonding-period-a-month-of-learning-beyond-code" class="nav-link active" data-scroll-target="#community-bonding-period-a-month-of-learning-beyond-code">Community Bonding Period – A Month of Learning Beyond Code</a>
+  <ul class="collapse">
+  <li><a href="#diving-deeper-into-spectral-programming" id="toc-diving-deeper-into-spectral-programming" class="nav-link" data-scroll-target="#diving-deeper-into-spectral-programming">Diving Deeper into Spectral Programming</a></li>
+  <li><a href="#mentor-meetings-that-went-beyond-the-project" id="toc-mentor-meetings-that-went-beyond-the-project" class="nav-link" data-scroll-target="#mentor-meetings-that-went-beyond-the-project">Mentor Meetings That Went Beyond the Project</a></li>
+  <li><a href="#working-on-florafit" id="toc-working-on-florafit" class="nav-link" data-scroll-target="#working-on-florafit">Working on FloraFit</a></li>
+  <li><a href="#writing-a-scientific-paper" id="toc-writing-a-scientific-paper" class="nav-link" data-scroll-target="#writing-a-scientific-paper">Writing a Scientific Paper</a></li>
+  <li><a href="#discovering-quarto-and-building-my-blog" id="toc-discovering-quarto-and-building-my-blog" class="nav-link" data-scroll-target="#discovering-quarto-and-building-my-blog">Discovering Quarto and Building My Blog</a></li>
+  <li><a href="#looking-back" id="toc-looking-back" class="nav-link" data-scroll-target="#looking-back">Looking Back</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -127,12 +135,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Test Blog</h1>
+<h1 class="title">Community Bonding Period – A Month of Learning Beyond Code</h1>
 </div>
 
 <div>
   <div class="description">
-    testing
+    My experience and explorations with hyperSpec and R during the community bonding period.
   </div>
 </div>
 
@@ -143,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 12, 2026</p>
+      <p class="date">May 24, 2026</p>
     </div>
   </div>
   
@@ -155,11 +163,61 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="desc" class="level2">
-<h2 class="anchored" data-anchor-id="desc">Desc</h2>
-<p>Whatever I did that week</p>
+<section id="community-bonding-period-a-month-of-learning-beyond-code" class="level1">
+<h1>Community Bonding Period – A Month of Learning Beyond Code</h1>
+<p>When people think of Google Summer of Code, they often imagine the coding period—pull requests, implementations, and long debugging sessions. Surprisingly, my Community Bonding period turned out to be just as valuable, even though very little of it involved writing the code that my proposal was centered around.</p>
+<p>My proposal focused on building a high-performance Rust backend for <strong>graph-based smoothing of hyperspectral images</strong> in the <strong>hyperSpec</strong> ecosystem, bridging R’s sparse matrices with Rust to accelerate spectral processing. The weeks before coding officially began became an opportunity to broaden my understanding of spectroscopy, improve my R skills, collaborate with my mentor, and even contribute to projects outside my proposal.</p>
+<p>Looking back, it felt less like preparation and more like becoming part of the community.</p>
+<hr>
+<section id="diving-deeper-into-spectral-programming" class="level2">
+<h2 class="anchored" data-anchor-id="diving-deeper-into-spectral-programming">Diving Deeper into Spectral Programming</h2>
+<p>One of my goals during this period was to become more comfortable with the R ecosystem surrounding spectroscopy.</p>
+<p>I spent a significant amount of time exploring <strong>hyperSpec</strong> and related packages, understanding how spectral datasets are represented, manipulated, and visualized. While my proposal is heavily focused on performance through Rust, I wanted to understand how researchers actually interact with spectral data from the R side before thinking about optimization. Reading package documentation gradually turned into experimenting with real datasets, trying different preprocessing techniques, and understanding why existing workflows were designed the way they are.</p>
+<p>It reminded me that optimization only makes sense once you truly understand the problem you’re trying to accelerate.</p>
+<hr>
+</section>
+<section id="mentor-meetings-that-went-beyond-the-project" class="level2">
+<h2 class="anchored" data-anchor-id="mentor-meetings-that-went-beyond-the-project">Mentor Meetings That Went Beyond the Project</h2>
+<p>One of the best parts of the bonding period was getting to know my mentor better. Our meetings certainly involved discussions about the project, timelines, implementation ideas, and research papers, but they were never limited to those topics. We ended up talking about programming languages, open source, scientific software, systems programming, academia, and sometimes completely unrelated ideas that simply happened to come up. Those conversations made the mentorship feel much more personal than transactional.</p>
+<p>Instead of only discussing <em>what</em> should be built, we often talked about <em>why</em> certain design choices mattered, how scientific software evolves over time, and what makes research code maintainable for years.</p>
+<p>As someone who enjoys understanding systems from first principles, these discussions were easily one of my favorite parts of the month.</p>
+<hr>
+</section>
+<section id="working-on-florafit" class="level2">
+<h2 class="anchored" data-anchor-id="working-on-florafit">Working on FloraFit</h2>
+<p>Although my primary GSoC project hadn’t officially started, I found myself contributing to another project called <strong>FloraFit</strong>.</p>
+<p>FloraFit is a tool that automatically fits equivalent electrical circuit models to electrochemical impedance spectroscopy (EIS) data collected from flower petals. Rather than manually selecting parameters, the software estimates the circuit components that best describe the measured impedance response.</p>
+<p>Working on FloraFit exposed me to an entirely different side of spectroscopy. Instead of hyperspectral imaging, I was now thinking about electrical models, impedance spectra, equivalent circuits, optimization, and model fitting.</p>
+<p>It was fascinating to see how similar mathematical ideas appear across completely different scientific domains.</p>
+<p>Beyond the implementation itself, it also reinforced something I enjoy about research software—writing code that directly helps scientists interpret experimental data.</p>
+<hr>
+</section>
+<section id="writing-a-scientific-paper" class="level2">
+<h2 class="anchored" data-anchor-id="writing-a-scientific-paper">Writing a Scientific Paper</h2>
+<p>Alongside the software itself, I also had the opportunity to contribute to the accompanying scientific paper.</p>
+<p>This was a completely different experience compared to programming.</p>
+<p>Writing a paper requires thinking carefully about how to explain ideas rather than simply implementing them. Every figure, every equation, and every paragraph has to tell a coherent story.</p>
+<p>I worked on describing the methodology, refining explanations, improving diagrams, and making the technical content easier to follow.</p>
+<p>It gave me a much greater appreciation for the amount of effort that goes into communicating research effectively.</p>
+<hr>
+</section>
+<section id="discovering-quarto-and-building-my-blog" class="level2">
+<h2 class="anchored" data-anchor-id="discovering-quarto-and-building-my-blog">Discovering Quarto and Building My Blog</h2>
+<p>Another memorable experience during the Community Bonding period was attending an <strong>R Stats community meeting</strong>, where I was introduced to <strong>Quarto</strong>.</p>
+<p>Until then, most of my documentation had been written in either Markdown or LaTeX. Quarto immediately stood out because of how naturally it combines technical writing, code, figures, and website generation into a single workflow. The session walked us through creating blog posts, organizing content, and generating a complete static website, making it much easier to share technical work in a clean and reproducible way.</p>
+<p>Inspired by the session, I decided to build my own blog website.</p>
+<p>What started as a small experiment quickly turned into something I genuinely enjoyed working on. Setting up the website gave me an opportunity to learn more about Quarto’s features while creating a space where I could document my GSoC journey, write about interesting technical problems, and share things I learn throughout the summer.</p>
+<p>I also realized that open source isn’t just about writing good code—it’s equally about communicating ideas. Having a personal blog encourages me to document my work more thoughtfully, and I hope it will serve as a useful record of both my successes and the lessons I learn along the way.</p>
+<hr>
+</section>
+<section id="looking-back" class="level2">
+<h2 class="anchored" data-anchor-id="looking-back">Looking Back</h2>
+<p>When I first looked at the Community Bonding timeline in my proposal, I imagined it would mostly involve setting up repositories, reading documentation, and preparing for coding. :contentReference<span data-index="1">oaicite:1</span> Instead, it became a month filled with learning.</p>
+<p>I explored spectral programming in R, learned from discussions with my mentor, contributed to FloraFit, worked on a scientific paper, discovered Quarto through the R community, and built a blog that you’re reading now. None of these activities directly completed a project milestone, but together they built the foundation for everything that follows during the coding period.</p>
+<p>Sometimes the most valuable progress isn’t measured by the number of commits you make—it’s measured by how much your perspective grows.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
