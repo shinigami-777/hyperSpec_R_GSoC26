@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-06-08">
+<meta name="description" content="How a discussion with my mentor introduced me to Electrochemical Impedance Spectroscopy, eventually leading to the development of FloraFit and our upcoming SoftwareX paper.">
 
-<title>GSoC’26 Reports – shinigami-777's Blog</title>
+<title>Building FloraFit – My Journey into Flower Circuit Analysis – shinigami-777’s Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +28,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1e273511d09b17b40736144097ac5380.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-1e273511d09b17b40736144097ac5380.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,67 +72,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -142,7 +84,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">shinigami-777’s Blog</span>
     </a>
   </div>
@@ -153,11 +95,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -168,25 +110,50 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#building-florafit-my-journey-into-flower-circuit-analysis" id="toc-building-florafit-my-journey-into-flower-circuit-analysis" class="nav-link active" data-scroll-target="#building-florafit-my-journey-into-flower-circuit-analysis">Building FloraFit – My Journey into Flower Circuit Analysis</a>
+  <ul class="collapse">
+  <li><a href="#learning-a-new-field" id="toc-learning-a-new-field" class="nav-link" data-scroll-target="#learning-a-new-field">Learning a New Field</a></li>
+  <li><a href="#from-research-to-software" id="toc-from-research-to-software" class="nav-link" data-scroll-target="#from-research-to-software">From Research to Software</a></li>
+  <li><a href="#understanding-flower-circuit-models" id="toc-understanding-flower-circuit-models" class="nav-link" data-scroll-target="#understanding-flower-circuit-models">Understanding Flower Circuit Models</a></li>
+  <li><a href="#making-the-fitting-reliable" id="toc-making-the-fitting-reliable" class="nav-link" data-scroll-target="#making-the-fitting-reliable">Making the Fitting Reliable</a></li>
+  <li><a href="#writing-our-softwarex-paper" id="toc-writing-our-softwarex-paper" class="nav-link" data-scroll-target="#writing-our-softwarex-paper">Writing Our SoftwareX Paper</a></li>
+  <li><a href="#looking-back" id="toc-looking-back" class="nav-link" data-scroll-target="#looking-back">Looking Back</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">GSoC’26 Reports</h1>
+<h1 class="title">Building FloraFit – My Journey into Flower Circuit Analysis</h1>
+</div>
+
+<div>
+  <div class="description">
+    How a discussion with my mentor introduced me to Electrochemical Impedance Spectroscopy, eventually leading to the development of FloraFit and our upcoming SoftwareX paper.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 8, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -196,57 +163,101 @@ window.Quarto = {
 </header>
 
 
+<section id="building-florafit-my-journey-into-flower-circuit-analysis" class="level1">
+<h1>Building FloraFit – My Journey into Flower Circuit Analysis</h1>
+<p>One of the things I enjoy most about research is that you never quite know where a conversation will lead.</p>
+<p>A few weeks ago, my mentor introduced me to an area I had never explored before—<strong>Electrochemical Impedance Spectroscopy (EIS)</strong>. At first, it sounded like something far removed from software engineering. The idea of studying flower petals using electrical measurements wasn’t something I had ever imagined.</p>
+<p>As we discussed the research further, I learned that flower petals have surprisingly rich electrical behaviour. By applying a small alternating current across a petal and measuring how it responds at different frequencies, researchers can gain insights into its internal structure and physiological state.</p>
+<p>The research itself was fascinating, but there was another challenge.</p>
+<p>Once researchers collect impedance data, they need to fit it to an equivalent electrical circuit to understand what the measurements actually mean. Existing tools weren’t designed specifically for flowers, and much of the analysis involved manual work.</p>
+<p>That’s when we decided to build <strong>FloraFit</strong>.</p>
+<hr>
+<section id="learning-a-new-field" class="level2">
+<h2 class="anchored" data-anchor-id="learning-a-new-field">Learning a New Field</h2>
+<p>Before contributing to FloraFit, I knew very little about Electrochemical Impedance Spectroscopy.</p>
+<p>The first few days weren’t spent writing code—they were spent reading.</p>
+<p>I learned how biological tissues conduct electricity, why they cannot simply be represented as a resistor, and how different structures inside a flower contribute to the overall electrical response.</p>
+<p>One concept that immediately stood out to me was <strong>equivalent circuit modelling</strong>.</p>
+<p>Instead of analysing thousands of impedance measurements directly, researchers build electrical circuits using familiar components like resistors and capacitors. If the circuit behaves like the flower, then its electrical parameters can reveal useful biological information.</p>
+<p>It was an elegant way of connecting biology and electrical engineering.</p>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Insert a simple diagram explaining EIS or a flower impedance measurement setup.</p>
+</blockquote>
+<hr>
+</section>
+<section id="from-research-to-software" class="level2">
+<h2 class="anchored" data-anchor-id="from-research-to-software">From Research to Software</h2>
+<p>As I understood the research better, we started discussing how we could make the analysis easier for researchers.</p>
+<p>Rather than requiring users to manually fit circuit parameters, we wanted software that could perform the fitting automatically while remaining easy to use.</p>
+<p>That idea eventually became <strong>FloraFit</strong>.</p>
+<p>We built FloraFit as an interactive R Shiny application that takes impedance measurements as input, fits different equivalent circuit models, and visualizes the results through Nyquist and Bode plots. Alongside the plots, the application also reports the estimated circuit parameters and fitting statistics, making it easier to compare models and interpret experiments. :contentReference<span data-index="0">oaicite:0</span></p>
+<p>One thing I appreciated while working on the application was how modular everything was. Circuit models, optimization routines, plotting, and the user interface were all separated cleanly, making it straightforward to extend the software as new models are developed. :contentReference<span data-index="1">oaicite:1</span></p>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Screenshot of the FloraFit interface (Figure 5 from the paper).</p>
+</blockquote>
+<hr>
+</section>
+<section id="understanding-flower-circuit-models" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-flower-circuit-models">Understanding Flower Circuit Models</h2>
+<p>One thing I found particularly interesting was that there isn’t a single electrical circuit that can represent every biological tissue.</p>
+<p>Different models make different assumptions about how electricity travels through the tissue.</p>
+<p>FloraFit currently supports four commonly used equivalent circuit models:</p>
+<ul>
+<li><strong>Voigt Model</strong>, which represents the tissue using multiple resistor-capacitor branches.</li>
+<li><strong>Single-Shell Model</strong>, where each cell is represented by a conductive interior surrounded by a membrane.</li>
+<li><strong>Double-Shell Model</strong>, which captures more complex cellular structures by introducing additional compartments.</li>
+<li><strong>Cole Model</strong>, which models impedance using a compact mathematical representation based on frequency-dependent dispersion.</li>
+</ul>
+<p>Each model provides a different balance between biological realism and mathematical simplicity, allowing researchers to choose the one that best describes their experimental data. :contentReference<span data-index="2">oaicite:2</span></p>
+<p>What I liked most was seeing how electrical engineering concepts could be used to describe living biological systems.</p>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Figure showing the four equivalent circuit models (Figure 1).</p>
+</blockquote>
+<hr>
+</section>
+<section id="making-the-fitting-reliable" class="level2">
+<h2 class="anchored" data-anchor-id="making-the-fitting-reliable">Making the Fitting Reliable</h2>
+<p>Initially, I assumed fitting would simply involve finding the parameters that minimized an error.</p>
+<p>It turned out to be much more challenging.</p>
+<p>Equivalent circuit models often contain several parameters, and different parameter combinations can produce remarkably similar impedance curves. Starting from poor initial values can easily cause optimization algorithms to converge to incorrect solutions.</p>
+<p>To make the fitting more reliable, FloraFit first estimates sensible initial parameters before performing multi-stage nonlinear optimization. This greatly improves convergence while keeping the estimated parameters physically meaningful. :contentReference<span data-index="3">oaicite:3</span></p>
+<p>Once the optimization is complete, the software generates Nyquist and Bode plots that allow users to visually compare the fitted model against the measured data.</p>
+<p>Watching the measured points gradually align with the fitted curve was one of those moments where all the mathematics finally felt tangible.</p>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Nyquist plot (Figure 3).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Bode magnitude and phase plots (Figure 4).</p>
+</blockquote>
+<hr>
+</section>
+<section id="writing-our-softwarex-paper" class="level2">
+<h2 class="anchored" data-anchor-id="writing-our-softwarex-paper">Writing Our SoftwareX Paper</h2>
+<p>As FloraFit continued to mature, we also began documenting the software as a <strong>SoftwareX</strong> paper.</p>
+<p>This was my first experience contributing to a paper focused entirely on scientific software.</p>
+<p>Writing the paper was very different from writing code.</p>
+<p>Instead of thinking about implementation details, we had to explain the motivation behind the software, describe the fitting methodology clearly, organize figures, and demonstrate why the application is useful for researchers.</p>
+<p>Seeing the project evolve from research discussions into a working application—and now into a paper that we are preparing to submit—has been incredibly rewarding. :contentReference<span data-index="4">oaicite:4</span></p>
+<blockquote class="blockquote">
+<p><strong>📷 Picture:</strong> Screenshot of the paper’s title page or a photo of you working on the manuscript (if you have one).</p>
+</blockquote>
+<hr>
+</section>
+<section id="looking-back" class="level2">
+<h2 class="anchored" data-anchor-id="looking-back">Looking Back</h2>
+<p>When my mentor first introduced me to Electrochemical Impedance Spectroscopy, I expected to simply learn about a new scientific technique.</p>
+<p>I didn’t expect that conversation to lead to building a research application and co-authoring a scientific paper.</p>
+<p>Working on FloraFit taught me much more than how to build an R Shiny application.</p>
+<p>It introduced me to plant electrophysiology, numerical optimization, equivalent circuit modelling, and the process of developing software that directly supports scientific research.</p>
+<p>Perhaps the biggest lesson I learned is that good research software isn’t just about writing code.</p>
+<p>It’s about making complex scientific methods easier to use, more reproducible, and more accessible to the people who need them.</p>
+<p>I’m excited to see where FloraFit goes next, and I look forward to seeing researchers use it to better understand the fascinating electrical behaviour of flowers.</p>
 
 
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-1">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1780876800000" data-listing-file-modified-sort="1783452063233" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="963">
-<a href="./posts/FloraFit/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/FloraFit/thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Building FloraFit – My Journey into Flower Circuit Analysis
-</h5>
-<div class="card-text listing-description delink">
-<p>How a discussion with my mentor introduced me to Electrochemical Impedance Spectroscopy, eventually leading to the development of FloraFit and our…</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jun 8, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1779580800000" data-listing-file-modified-sort="1783452063228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="886">
-<a href="./posts/Contributing-Period/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/Contributing-Period/thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Community Bonding Period – A Month of Learning Beyond Code
-</h5>
-<div class="card-text listing-description delink">
-<p>My experience and explorations with hyperSpec and R during the community bonding period.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-May 24, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
