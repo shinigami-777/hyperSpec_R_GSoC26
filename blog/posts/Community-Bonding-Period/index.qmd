@@ -83,7 +83,7 @@ I also realized that open source isn't just about writing good code—it's equal
 
 ## Looking Back
 
-When I first looked at the Community Bonding timeline in my proposal, I imagined it would mostly involve setting up repositories, reading documentation, and preparing for coding. :contentReference[oaicite:1]{index=1}
+When I first looked at the Community Bonding timeline in my proposal, I imagined it would mostly involve setting up repositories, reading documentation, and preparing for coding.
 Instead, it became a month filled with learning.
 
 I explored spectral programming in R, learned from discussions with my mentor, contributed to FloraFit, worked on a scientific paper, discovered Quarto through the R community, and built a blog that you're reading now. None of these activities directly completed a project milestone, but together they built the foundation for everything that follows during the coding period.

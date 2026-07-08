@@ -43,9 +43,9 @@ As I understood the research better, we started discussing how we could make the
 Rather than requiring users to manually fit circuit parameters, we wanted software that could perform the fitting automatically while remaining easy to use.
 That idea eventually became **FloraFit**.
 
-We built FloraFit as an interactive R Shiny application that takes impedance measurements as input, fits different equivalent circuit models, and visualizes the results through Nyquist and Bode plots. Alongside the plots, the application also reports the estimated circuit parameters and fitting statistics, making it easier to compare models and interpret experiments. :contentReference[oaicite:0]{index=0}
+We built FloraFit as an interactive R Shiny application that takes impedance measurements as input, fits different equivalent circuit models, and visualizes the results through Nyquist and Bode plots. Alongside the plots, the application also reports the estimated circuit parameters and fitting statistics, making it easier to compare models and interpret experiments.
 
-One thing I appreciated while working on the application was how modular everything was. Circuit models, optimization routines, plotting, and the user interface were all separated cleanly, making it straightforward to extend the software as new models are developed. :contentReference[oaicite:1]{index=1}
+One thing I appreciated while working on the application was how modular everything was. Circuit models, optimization routines, plotting, and the user interface were all separated cleanly, making it straightforward to extend the software as new models are developed.
 
 ![](interface.png)
 
@@ -64,7 +64,7 @@ FloraFit currently supports four commonly used equivalent circuit models:
 - **Double-Shell Model**, which captures more complex cellular structures by introducing additional compartments.
 - **Cole Model**, which models impedance using a compact mathematical representation based on frequency-dependent dispersion.
 
-Each model provides a different balance between biological realism and mathematical simplicity, allowing researchers to choose the one that best describes their experimental data. :contentReference[oaicite:2]{index=2}
+Each model provides a different balance between biological realism and mathematical simplicity, allowing researchers to choose the one that best describes their experimental data.
 
 What I liked most was seeing how electrical engineering concepts could be used to describe living biological systems.
 
@@ -79,7 +79,7 @@ It turned out to be much more challenging.
 
 Equivalent circuit models often contain several parameters, and different parameter combinations can produce remarkably similar impedance curves. Starting from poor initial values can easily cause optimization algorithms to converge to incorrect solutions.
 
-To make the fitting more reliable, FloraFit first estimates sensible initial parameters before performing multi-stage nonlinear optimization. This greatly improves convergence while keeping the estimated parameters physically meaningful. :contentReference[oaicite:3]{index=3}
+To make the fitting more reliable, FloraFit first estimates sensible initial parameters before performing multi-stage nonlinear optimization. This greatly improves convergence while keeping the estimated parameters physically meaningful.
 
 Once the optimization is complete, the software generates Nyquist and Bode plots that allow users to visually compare the fitted model against the measured data.
 Watching the measured points gradually align with the fitted curve was one of those moments where all the mathematics finally felt tangible.
@@ -97,7 +97,7 @@ This was my first experience contributing to a paper focused entirely on scienti
 Writing the paper was very different from writing code.
 Instead of thinking about implementation details, we had to explain the motivation behind the software, describe the fitting methodology clearly, organize figures, and demonstrate why the application is useful for researchers.
 
-Seeing the project evolve from research discussions into a working application—and now into a paper that we are preparing to submit—has been incredibly rewarding. :contentReference[oaicite:4]{index=4}
+Seeing the project evolve from research discussions into a working application—and now into a paper that we are preparing to submit—has been incredibly rewarding.
 
 ---
 
