@@ -184,8 +184,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="from-research-to-software">From Research to Software</h2>
 <p>As I understood the research better, we started discussing how we could make the analysis easier for researchers.</p>
 <p>Rather than requiring users to manually fit circuit parameters, we wanted software that could perform the fitting automatically while remaining easy to use. That idea eventually became <strong>FloraFit</strong>.</p>
-<p>We built FloraFit as an interactive R Shiny application that takes impedance measurements as input, fits different equivalent circuit models, and visualizes the results through Nyquist and Bode plots. Alongside the plots, the application also reports the estimated circuit parameters and fitting statistics, making it easier to compare models and interpret experiments. :contentReference<span data-index="0">oaicite:0</span></p>
-<p>One thing I appreciated while working on the application was how modular everything was. Circuit models, optimization routines, plotting, and the user interface were all separated cleanly, making it straightforward to extend the software as new models are developed. :contentReference<span data-index="1">oaicite:1</span></p>
+<p>We built FloraFit as an interactive R Shiny application that takes impedance measurements as input, fits different equivalent circuit models, and visualizes the results through Nyquist and Bode plots. Alongside the plots, the application also reports the estimated circuit parameters and fitting statistics, making it easier to compare models and interpret experiments.</p>
+<p>One thing I appreciated while working on the application was how modular everything was. Circuit models, optimization routines, plotting, and the user interface were all separated cleanly, making it straightforward to extend the software as new models are developed.</p>
 <p><img src="interface.png" class="img-fluid"></p>
 <hr>
 </section>
@@ -200,7 +200,7 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Double-Shell Model</strong>, which captures more complex cellular structures by introducing additional compartments.</li>
 <li><strong>Cole Model</strong>, which models impedance using a compact mathematical representation based on frequency-dependent dispersion.</li>
 </ul>
-<p>Each model provides a different balance between biological realism and mathematical simplicity, allowing researchers to choose the one that best describes their experimental data. :contentReference<span data-index="2">oaicite:2</span></p>
+<p>Each model provides a different balance between biological realism and mathematical simplicity, allowing researchers to choose the one that best describes their experimental data.</p>
 <p>What I liked most was seeing how electrical engineering concepts could be used to describe living biological systems.</p>
 <p><img src="circuit-models.png" class="img-fluid"></p>
 <hr>
@@ -209,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="making-the-fitting-reliable">Making the Fitting Reliable</h2>
 <p>Initially, I assumed fitting would simply involve finding the parameters that minimized an error. It turned out to be much more challenging.</p>
 <p>Equivalent circuit models often contain several parameters, and different parameter combinations can produce remarkably similar impedance curves. Starting from poor initial values can easily cause optimization algorithms to converge to incorrect solutions.</p>
-<p>To make the fitting more reliable, FloraFit first estimates sensible initial parameters before performing multi-stage nonlinear optimization. This greatly improves convergence while keeping the estimated parameters physically meaningful. :contentReference<span data-index="3">oaicite:3</span></p>
+<p>To make the fitting more reliable, FloraFit first estimates sensible initial parameters before performing multi-stage nonlinear optimization. This greatly improves convergence while keeping the estimated parameters physically meaningful.</p>
 <p>Once the optimization is complete, the software generates Nyquist and Bode plots that allow users to visually compare the fitted model against the measured data. Watching the measured points gradually align with the fitted curve was one of those moments where all the mathematics finally felt tangible.</p>
 <p><img src="nyquist.png" class="img-fluid"> <img src="bode.png" class="img-fluid"></p>
 <hr>
@@ -218,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="writing-our-softwarex-paper">Writing Our SoftwareX Paper</h2>
 <p>As FloraFit continued to mature, we also began documenting the software as a <strong>SoftwareX</strong> paper.</p>
 <p>This was my first experience contributing to a paper focused entirely on scientific software. Writing the paper was very different from writing code. Instead of thinking about implementation details, we had to explain the motivation behind the software, describe the fitting methodology clearly, organize figures, and demonstrate why the application is useful for researchers.</p>
-<p>Seeing the project evolve from research discussions into a working application—and now into a paper that we are preparing to submit—has been incredibly rewarding. :contentReference<span data-index="4">oaicite:4</span></p>
+<p>Seeing the project evolve from research discussions into a working application—and now into a paper that we are preparing to submit—has been incredibly rewarding.</p>
 <hr>
 </section>
 <section id="looking-back" class="level2">
